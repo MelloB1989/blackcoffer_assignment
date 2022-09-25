@@ -8,11 +8,12 @@ See the License for the specific language governing permissions and limitations 
 
 
 
-
+const { MongoClient } = require("mongodb");
 const express = require('express')
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 
+var uri = "mongodb://mellob:mellob1989@172.105.61.35:27017/?authMechanism=DEFAULT"
 // declare a new express app
 const app = express()
 app.use(bodyParser.json())
@@ -26,60 +27,29 @@ app.use(function(req, res, next) {
 });
 
 
-/**********************
- * Example get method *
- **********************/
 
-app.get('/api', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
+app.get('/api', async function(req, res) {
+  const client = new MongoClient(uri);
+  try{
+  const database = client.db('temp');
+  const col = database.collection('data');
+  const query = { topic: 'oil' };
+  const result = await col.findOne(query);
+  //var send = await result.forEach(console.dir)
+  res.json(result);
+  }
+  catch{
+    res.json({"err" : console.dir})
+  }
+  finally{
+    await client.close();
+  }
 });
 
-app.get('/api/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-/****************************
-* Example post method *
-****************************/
-
-app.post('/api', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
 
 app.post('/api/*', function(req, res) {
   // Add your code here
   res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example put method *
-****************************/
-
-app.put('/api', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-app.put('/api/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/api', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/api/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
 });
 
 app.listen(3000, function() {
