@@ -4,6 +4,9 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Chart from './Chart';
 //import faker from 'faker';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 export default class App extends Component {
 
@@ -84,6 +87,56 @@ export default class App extends Component {
       <div>
         <Chart apiData={this.state.apiData} page={this.state.page}/>
       </div>
+      <div>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          p: 1,
+          m: 1,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+        }}
+      >
+      <Card variant="outlined" sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Typography variant="h5" component="div">
+          Variables
+        </Typography>
+        <Typography variant="body2">
+          Topic
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          {this.state.apiData[this.state.page]['topic']}
+        </Typography>
+        <Typography variant="body2">
+          Year
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        {this.state.apiData[this.state.page]['start_year']} - {this.state.apiData[this.state.page]['end_year']}
+        </Typography>
+        <Typography variant="body2">
+          Country
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        {this.state.apiData[this.state.page]['country']}
+        </Typography>
+        <Typography variant="body2">
+          Region
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        {this.state.apiData[this.state.page]['region']}
+        </Typography>
+        <Typography variant="body2">
+          Pestle
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        {this.state.apiData[this.state.page]['pestle']}
+        </Typography>
+      </CardContent>
+    </Card>
+    </Box>
+    </div>
       </div>
       )
       :
