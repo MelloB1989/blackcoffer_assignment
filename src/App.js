@@ -43,9 +43,33 @@ export default class App extends Component {
         (result) => {
           this.setState({
             isLoaded: true,
-            apiData: result
-          });
-          //console.log(result["blog_type"]);
+            apiData: result,
+            ChartData : {
+              labels: ["Relevance", "Intensity", "Likelihood"],
+              datasets: [
+                {
+                  label: result.title,
+                  data: [result.relevance, result.intensity, result.likelihood],
+                  borderColor: "rgb(53, 162, 235)",
+                  backgroundColor: "rgba(53, 162, 235, 0.4)",
+                },
+              ],
+            },
+            ChartOptions : {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: this.state.apiData['title'],
+                },
+              },
+            }
+          }
+          );
+          //console.log(this.state.apiData.title);
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
@@ -57,37 +81,21 @@ export default class App extends Component {
           });
         }
       );
-    this.setState({
-      ChartData : {
-      labels: ["Topic", "Intensity", "Likelihood"],
-      datasets: [
-        {
-          label: "Whom'st let the dogs out",
-          data: [12, 55, 34, 120, 720],
-          borderColor: "rgb(53, 162, 235)",
-          backgroundColor: "rgba(53, 162, 235, 0.4)",
-        },
-      ],
-    },
-    ChartOptions : {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "top",
-        },
-        title: {
-          display: true,
-          text: "Whom'st let the dogs out",
-        },
-      },
-    }
-  })}
+  }
 
   render() {
+    
     return (
+      <>
+      { this.state.isLoaded ? (
       <div>
         <Bar options={this.state.ChartOptions} data={this.state.ChartData} />
       </div>
+      )
+      :
+      (<p></p>)
+      }
+      </>
     )
   }
 }
