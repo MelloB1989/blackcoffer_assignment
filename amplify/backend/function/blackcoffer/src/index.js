@@ -11,5 +11,8 @@ const server = awsServerlessExpress.createServer(app);
  */
 exports.handler = (event, context) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
+  //console.log("ENVIRONMENT VARIABLES\n" + JSON.stringify(process.env, null, 2))
+  console.info("EVENT\n" + JSON.stringify(event, null, 2))
+  console.warn("Event not processed.")
   return awsServerlessExpress.proxy(server, event, context, 'PROMISE').promise;
 };

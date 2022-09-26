@@ -29,14 +29,17 @@ app.use(function(req, res, next) {
 
 
 app.get('/api', async function(req, res) {
-  const client = new MongoClient(uri);
+  const client = new MongoClient(uri, { useUnifiedTopology: true}, { useNewUrlParser: true }, { connectTimeoutMS: 30000 }, { keepAlive: 1});
   try{
   const database = client.db('temp');
   const col = database.collection('data');
   const query = { topic: 'oil' };
-  const result = await col.findOne(query);
+  const result = await col.find(query).toArray().then((ans) => {
+                                                                    return ans;
+                                                                  });
   //var send = await result.forEach(console.dir)
   res.json(result);
+  //console.log(result);
   }
   catch{
     res.json({"err" : console.dir})

@@ -1,19 +1,22 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+//import faker from 'faker';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
@@ -53,6 +56,18 @@ export default class App extends Component {
                   borderColor: "rgb(53, 162, 235)",
                   backgroundColor: "rgba(53, 162, 235, 0.4)",
                 },
+                {
+                  label: result.title,
+                  data: [3, 2, 4],
+                  borderColor: 'rgb(255, 99, 132)',
+                  backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                },
+                {
+                  label: result.title,
+                  data: [2, 4, 1],
+                  borderColor: 'rgb(53, 162, 235)',
+                  backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                },
               ],
             },
             ChartOptions : {
@@ -63,7 +78,7 @@ export default class App extends Component {
                 },
                 title: {
                   display: true,
-                  text: this.state.apiData['title'],
+                  text: "BlackCoffer Assignment",
                 },
               },
             }
@@ -89,7 +104,7 @@ export default class App extends Component {
       <>
       { this.state.isLoaded ? (
       <div>
-        <Bar options={this.state.ChartOptions} data={this.state.ChartData} />
+        <Line options={this.state.ChartOptions} data={this.state.ChartData} />
       </div>
       )
       :

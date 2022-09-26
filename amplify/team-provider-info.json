@@ -19,7 +19,7 @@
       "function": {
         "blackcoffer": {
           "deploymentBucketName": "amplify-blackcofferassignmen-dev-180402-deployment",
-          "s3Key": "amplify-builds/blackcoffer-763049564f4749527449-build.zip"
+          "s3Key": "amplify-builds/blackcoffer-737144686b374f6c686e-build.zip"
         }
       }
     }
