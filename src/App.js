@@ -1,36 +1,20 @@
 import React, { Component } from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Chart from './Chart';
 //import faker from 'faker';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 export default class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      ChartOptions : {},
-      ChartData : {datasets : []},
+      //ChartOptions : {},
+      //ChartData : {datasets : []},
       apiData : {},
-      isLoaded : false
+      isLoaded : false,
+      page: 0
     };
   }
 
@@ -47,41 +31,6 @@ export default class App extends Component {
           this.setState({
             isLoaded: true,
             apiData: result,
-            ChartData : {
-              labels: ["Relevance", "Intensity", "Likelihood"],
-              datasets: [
-                {
-                  label: result.title,
-                  data: [result.relevance, result.intensity, result.likelihood],
-                  borderColor: "rgb(53, 162, 235)",
-                  backgroundColor: "rgba(53, 162, 235, 0.4)",
-                },
-                {
-                  label: result.title,
-                  data: [3, 2, 4],
-                  borderColor: 'rgb(255, 99, 132)',
-                  backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                },
-                {
-                  label: result.title,
-                  data: [2, 4, 1],
-                  borderColor: 'rgb(53, 162, 235)',
-                  backgroundColor: 'rgba(53, 162, 235, 0.5)',
-                },
-              ],
-            },
-            ChartOptions : {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: "top",
-                },
-                title: {
-                  display: true,
-                  text: "BlackCoffer Assignment",
-                },
-              },
-            }
           }
           );
           //console.log(this.state.apiData.title);
@@ -99,12 +48,42 @@ export default class App extends Component {
   }
 
   render() {
-    
+
+    const nextchart = () => {
+      this.setState({page : this.state.page+1})
+      console.log(this.state.page)
+    }
+
+    const prevchart = () => {
+      this.setState({page : this.state.page-1})
+    }
+
     return (
       <>
       { this.state.isLoaded ? (
       <div>
-        <Line options={this.state.ChartOptions} data={this.state.ChartData} />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          p: 1,
+          m: 1,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+        }}
+      >
+      <Stack direction="row" spacing={2}>
+      <Button variant="outlined" onClick={prevchart}>Previous</Button>
+      <Button variant="outlined" disabled>
+        Develped by MelloB
+      </Button>
+      <Button variant="outlined" onClick={nextchart}>Next</Button>
+      </Stack>
+      </Box>
+  
+      <div>
+        <Chart apiData={this.state.apiData} page={this.state.page}/>
+      </div>
       </div>
       )
       :
