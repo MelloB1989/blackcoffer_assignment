@@ -88,7 +88,9 @@ export default class App extends Component {
         }}
       >
       <Stack direction="row" spacing={2}>
+        {this.state.page === 0 ? (<Button variant="outlined" disabled>Previous</Button>) : (
       <Button variant="outlined" onClick={prevchart}>Previous</Button>
+        )}
       <Button variant="outlined" disabled>
         Develped by MelloB
       </Button>

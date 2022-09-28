@@ -19,6 +19,11 @@ const app = express()
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+
 // Enable CORS for all methods
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
@@ -27,7 +32,7 @@ app.use(function(req, res, next) {
 });
 
 
-
+/*
 app.get('/api', async function(req, res) {
   const client = new MongoClient(uri, { useUnifiedTopology: true}, { useNewUrlParser: true }, { connectTimeoutMS: 30000 }, { keepAlive: 1});
   try{
@@ -48,12 +53,56 @@ app.get('/api', async function(req, res) {
     await client.close();
   }
 });
+*/
+app.get('/api', async function(req, res) {
+  
+  const client = new MongoClient(uri, { useUnifiedTopology: true}, { useNewUrlParser: true }, { connectTimeoutMS: 30000 }, { keepAlive: 1});
+  try{
+  const database = client.db('temp');
+  const query = {};
+  const col = database.collection('data');
+  if (req.headers.topic !== ""){
+    query['topic'] = req.headers.topic;
+  }
+  if (req.headers.endyr !== ""){
+    query['endyr'] = req.headers.endyr;
+  }
+  if (req.headers.source !== ""){
+    query['source'] = req.headers.source;
+  }
+  if (req.headers.pest !== ""){
+    query['pest'] = req.headers.pest;
+  }
+  if (req.headers.country !== ""){
+    query['country'] = req.headers.country;
+  }
+  if (req.headers.city !== ""){
+    query['city'] = req.headers.city;
+  }
+  if (req.headers.sector !== ""){
+    query['sector'] = req.headers.sector;
+  }
+  if (req.headers.region !== ""){
+    query['region'] = req.headers.region;
+  }
 
-
-app.post('/api/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
+  const result = await col.find(query).toArray().then((ans) => {
+                                                                    return ans;
+                                                                });
+  //var send = await result.forEach(console.dir)
+  res.json(result);
+  //console.log(result);
+  }
+  catch{
+    res.json({"err" : console.dir})
+  }
+  finally{
+    await client.close();
+  }
+  
+  //res.json({body : JSON.parse(req.body.query)})
 });
+
 
 app.listen(3000, function() {
     console.log("App started")
