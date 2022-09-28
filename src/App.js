@@ -30,6 +30,7 @@ export default class App extends Component {
       source: '',
       country: '',
       city: '',
+      region: '',
       noData: false,
       arrLength: 0
     };
@@ -78,6 +79,7 @@ export default class App extends Component {
 
     const api_get = () => {
       //FILTER API HIT
+      this.setState({page: 0})
       fetch(`https://rxyyzqo4dj.execute-api.ap-south-1.amazonaws.com/dev/api`, {
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +91,7 @@ export default class App extends Component {
         "source": this.state.source,
         "country": this.state.country,
         "city": this.state.city,
-        "region": ""
+        "region": this.state.region
       },
     })
       .then((res) => res.json())
@@ -101,7 +103,7 @@ export default class App extends Component {
             arrLength: result.length
           }
           );
-          //console.log(result.noData);
+          //console.log(result.length);
           if (result["noData"] === "true")
             this.setState({noData: true})
           else
@@ -149,7 +151,9 @@ export default class App extends Component {
       <Button variant="outlined" disabled>
         Develped by MelloB
       </Button>
-      <Button variant="outlined" onClick={nextchart}>Next</Button>
+        {this.state.page === this.state.arrLength-1 ? (<Button variant="outlined" disabled>Next</Button>) : (
+          <Button variant="outlined" onClick={nextchart}>Next</Button>
+        )}
       </Stack>
       </Box>
       <Box
@@ -307,7 +311,7 @@ export default class App extends Component {
     </Box>
     </div>
     </>
-    ): (<p></p>)
+    ): (<h1>No Data Found</h1>)
       }
       </div>
       </>
