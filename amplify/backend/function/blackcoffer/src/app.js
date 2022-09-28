@@ -65,13 +65,13 @@ app.get('/api', async function(req, res) {
     query['topic'] = req.headers.topic;
   }
   if (req.headers.endyr !== ""){
-    query['endyr'] = req.headers.endyr;
+    query['end_year'] = req.headers.endyr;
   }
   if (req.headers.source !== ""){
     query['source'] = req.headers.source;
   }
   if (req.headers.pest !== ""){
-    query['pest'] = req.headers.pest;
+    query['pestle'] = req.headers.pest;
   }
   if (req.headers.country !== ""){
     query['country'] = req.headers.country;
@@ -87,7 +87,10 @@ app.get('/api', async function(req, res) {
   }
 
   const result = await col.find(query).toArray().then((ans) => {
-                                                                    return ans;
+    if(ans.length === 0)
+      return {"noData" : "true"}
+    else
+      return ans;
                                                                 });
   //var send = await result.forEach(console.dir)
   res.json(result);

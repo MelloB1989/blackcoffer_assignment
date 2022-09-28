@@ -29,7 +29,8 @@ export default class App extends Component {
       pest: '',
       source: '',
       country: '',
-      city: ''
+      city: '',
+      noData: false
     };
   }
 
@@ -38,6 +39,14 @@ export default class App extends Component {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": "XnVprdMJuVuP7B23EfHr7MPmwFOAIrA6lShzZrUg",
+        "topic": this.state.topic,
+        "endyr": this.state.endyr,
+        "sector": this.state.sector,
+        "pest": this.state.pest,
+        "source": this.state.source,
+        "country": this.state.country,
+        "city": this.state.city,
+        "region": ""
       },
     })
       .then((res) => res.json())
@@ -64,6 +73,48 @@ export default class App extends Component {
 
   render() {
 
+    const api_get = () => {
+      fetch(`https://rxyyzqo4dj.execute-api.ap-south-1.amazonaws.com/dev/api`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "XnVprdMJuVuP7B23EfHr7MPmwFOAIrA6lShzZrUg",
+        "topic": this.state.topic,
+        "endyr": this.state.endyr,
+        "sector": this.state.sector,
+        "pest": this.state.pest,
+        "source": this.state.source,
+        "country": this.state.country,
+        "city": this.state.city,
+        "region": ""
+      },
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            apiData: result
+          }
+          );
+          //console.log(result.noData);
+          if (result["noData"] === "true")
+            this.setState({noData: true})
+          else
+            this.setState({noData: false})
+          //console.log(this.state.noData)
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
+    }
+
     const nextchart = () => {
       this.setState({page : this.state.page+1})
       //console.log(this.state.page)
@@ -75,7 +126,6 @@ export default class App extends Component {
 
     return (
       <>
-      { this.state.isLoaded ? (
       <div>
       <Box
         sx={{
@@ -120,7 +170,7 @@ export default class App extends Component {
           label="Topic"
           type="search"
           variant="filled"
-          onChange={(event) => this.setState({topic : event.target.value})}
+          onChange={(event) => { this.setState({topic : event.target.value}); api_get();}}
           value={this.state.topic}
         />
 
@@ -194,8 +244,10 @@ export default class App extends Component {
 
       </Stack>
       </Box>
+      { !this.state.noData && this.state.isLoaded ? (
+      <>
       <div>
-        <Chart apiData={this.state.apiData} page={this.state.page}/>
+        <Chart apiData={this.state.apiData} page={this.state.page} noData={this.state.noData}/>
       </div>
       <div>
       <Box
@@ -247,11 +299,10 @@ export default class App extends Component {
     </Card>
     </Box>
     </div>
-      </div>
-      )
-      :
-      (<p></p>)
+    </>
+    ): (<p></p>)
       }
+      </div>
       </>
     )
   }

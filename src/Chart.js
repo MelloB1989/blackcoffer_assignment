@@ -41,35 +41,6 @@ export default class Chart extends Component {
     var ChartData = {
         labels: ["Relevance", "Intensity", "Likelihood"],
         datasets: [
-          /*
-          {
-            label: result.title,
-            data: [result.relevance, result.intensity, result.likelihood],
-            borderColor: "rgb(53, 162, 235)",
-            backgroundColor: "rgba(53, 162, 235, 0.4)",
-          },
-          {
-            label: result.title,
-            data: [3, 2, 4],
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          },
-          {
-            label: result.title,
-            data: [2, 4, 1],
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          },
-          
-         result.map((dataset) => {
-          return {
-            label: dataset.title,
-            data: [dataset.relevance, dataset.intensity, dataset.likelihood],
-            boderColor: this.getRandomColor(),
-            backgroundColor: this.getRandomColor,
-          }
-         }),
-         */
         {
             label: this.props.apiData[this.props.page].title,
             fill: true,
