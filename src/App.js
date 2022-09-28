@@ -30,11 +30,13 @@ export default class App extends Component {
       source: '',
       country: '',
       city: '',
-      noData: false
+      noData: false,
+      arrLength: 0
     };
   }
 
   componentDidMount(){
+    //FIRST API HIT ON PAGE LOAD
     fetch(`https://rxyyzqo4dj.execute-api.ap-south-1.amazonaws.com/dev/api`, {
       headers: {
         "Content-Type": "application/json",
@@ -55,6 +57,7 @@ export default class App extends Component {
           this.setState({
             isLoaded: true,
             apiData: result,
+            arrLength: result.length
           }
           );
           //console.log(this.state.apiData.title);
@@ -74,6 +77,7 @@ export default class App extends Component {
   render() {
 
     const api_get = () => {
+      //FILTER API HIT
       fetch(`https://rxyyzqo4dj.execute-api.ap-south-1.amazonaws.com/dev/api`, {
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +97,8 @@ export default class App extends Component {
         (result) => {
           this.setState({
             isLoaded: true,
-            apiData: result
+            apiData: result,
+            arrLength: result.length
           }
           );
           //console.log(result.noData);
@@ -170,7 +175,7 @@ export default class App extends Component {
           label="Topic"
           type="search"
           variant="filled"
-          onChange={(event) => { this.setState({topic : event.target.value}); api_get();}}
+          onChange={(event) => this.setState({topic : event.target.value})}
           value={this.state.topic}
         />
 
@@ -236,6 +241,8 @@ export default class App extends Component {
         onChange={(event) => this.setState({city : event.target.value})}
         value={this.state.city}
       />
+
+<Button onClick={api_get} variant="contained">Apply</Button>
       </>
       ) : (
         <p></p>
