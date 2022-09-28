@@ -72,9 +72,12 @@ export default class Chart extends Component {
          */
         {
             label: this.props.apiData[this.props.page].title,
+            fill: true,
             data: [this.props.apiData[this.props.page].relevance, this.props.apiData[this.props.page].intensity, this.props.apiData[this.props.page].likelihood],
             boderColor: this.getRandomColor(),
             backgroundColor: this.getRandomColor(),
+            //backgroundColor: "rgba(75,192,192,0.2)",
+            //borderColor: "rgba(75,192,192,1)"
         }
         ],
       };
